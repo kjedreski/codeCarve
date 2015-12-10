@@ -15,7 +15,6 @@ class seamCarve:
 #For the boundary cases, the difference = 0 if one of the pixel is outside of
 #the given image.
 
-
     def cleanUp(self):
         self.matrix = [x for x in self.matrix if x!=[]]
 
@@ -49,8 +48,7 @@ class seamCarve:
             for j in range(self.columns):
                 trackEnergy[i][j] = self.returnEnergy(i,j)
         self.trackEnergy = trackEnergy
-#At the end of this process, the minimum value of the last row in
-#M will indicate the end of the minimal connected vertical seam.
+
     def cumlativeCalcHorizontal(self):
             #for j in range(self.rows):
         #self.matrix = self.matrix.tolist()

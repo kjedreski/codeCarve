@@ -1,3 +1,10 @@
+#Program: Seam Carving
+#Developer: Kevin Jedreski
+#Purpose: run seam carve on pgm images and then create new pgm images
+#how: to run: >> python main.py imagename verticalseams horizontalseams
+
+
+
 import sys
 from sys import argv
 from cmdLineParse import cmdLineParse

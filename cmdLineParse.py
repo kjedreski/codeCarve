@@ -11,8 +11,6 @@ class cmdLineParse:
         return args[1], args[2], args[3]
 
     def findColumnsRows(self):
-        #goes by columns,rows in this ex: 3 8\n
-        #this will ONLY work if comment is not IN firstFour,
         for element in self.firstFour:
             if len(element.split()) == 2:
                 return int(element.split()[0]), int(element.split()[1])
@@ -28,14 +26,7 @@ class cmdLineParse:
                 for j in range(columns):
                     array[i][j] = int(data[iterator])
                     iterator+=1
-        #print array
         return array
-
-
-        #pad with 500
-        #array = np.reshape(rows,columns)
-        #return array.astype(int)
-
 
     def findFour(self):
         currRow = 0
