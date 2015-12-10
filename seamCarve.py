@@ -67,46 +67,28 @@ class seamCarve:
                             self.trackEnergy[i][j]+=min( self.trackEnergy[i-1][j-1],\
                             self.trackEnergy[i][j-1]  )
                         else:
-                            #print "choose minimum between {}, {}, and {}".format(self.trackEnergy[i-1][j-1],\
-                            #self.trackEnergy[i][j-1]  ,self.trackEnergy[i+1][j-1])
                             self.trackEnergy[i][j]+=min( self.trackEnergy[i-1][j-1],\
                             self.trackEnergy[i][j-1]  ,self.trackEnergy[i+1][j-1])
-        #print "___________"
-        #for i in self.trackEnergy:
-            #print i
-
-
         #here we simply calculate the new matrix
     def cumlativeCalcVertical(self):
                 for i in range(0,self.rows):
                     for j in range(0,self.columns):
                             if i == 0:
-                                #print "curr coords: {},{}".format(i,j)
                                 continue
                             else:
-                                #check for negative rows:
-                                #print self.trackEnergy
                                 if  j-1 < 0:
                                     if i == self.rows-1:
-                                        #print "curr coords: {},{}".format(i,j)
                                         self.trackEnergy[i][j]+=min( self.trackEnergy[i-1][j+1]\
                                         ,self.trackEnergy[i-1][j])
                                     else:
-                                        #print "curr coords: {},{}".format(i,j)
                                         self.trackEnergy[i][j]+=min( self.trackEnergy[i-1][j+1]\
                                         ,self.trackEnergy[i-1][j])
                                 elif j+1 == self.columns:
-                                    #print "curr coords: {},{}".format(i,j)
                                     self.trackEnergy[i][j]+=min( self.trackEnergy[i-1][j],\
                                     self.trackEnergy[i-1][j-1]  )
                                 else:
-                                    #print "curr coords: {},{}".format(i,j)
-                                    #self.trackEnergy[i][j+1]  ,self.trackEnergy[i-1][j+1])
                                     self.trackEnergy[i][j]+=min( self.trackEnergy[i-1][j-1],\
                                     self.trackEnergy[i-1][j+1]  ,self.trackEnergy[i-1][j])
-            #    print "___________"
-                #for i in self.trackEnergy:
-                    #print i
 #Hence, in the second step we backtrack from this minimum entry on
 #M to find the path of the optimal seam
 #note: vertical first, choose f(x) for this step
@@ -148,21 +130,14 @@ class seamCarve:
                         )
                     lastEle = len(removeMe)
                     if removeMe[lastEle-1] == self.trackEnergy[i-1][startPt-1]:
-                        #self.shiftup(j-1,startPt-1)
                         if startPt-1 < 0:
-                            #print "col less than 0  error"
                             error = len(self.matrix)+1
                             startPt = error
-                        #self.matrix[i-1][startPt-1]=-1
                         self.shiftLeft(i-1,startPt-1)
                         startPt = startPt-1
                     elif removeMe[lastEle-1]==self.trackEnergy[i-1][startPt]:
-                        #self.shiftup(j-1,startPt)
-                        #self.matrix[i-1][startPt]=-1
                         self.shiftLeft(i-1,startPt)
                     elif removeMe[lastEle-1]==self.trackEnergy[i-1][startPt+1]:
-                        #self.shiftup(j-1,startPt+1)
-                        #self.matrix[i-1][startPt+1]=-1
                         self.shiftLeft(i-1,startPt+1)
                         startPt = startPt+1
                 except IndexError:
@@ -173,18 +148,13 @@ class seamCarve:
                     #test for columns goiong out of bounds
                 #    print "In error: checking bound of IndexError:{},{}".format(i,startPt)
                     if startPt-1 < 0:
-                    #    print "index out of bounds error: Left*******************"
                         removeMe.append(
                             min( self.trackEnergy[i-1][startPt]  ,self.trackEnergy[i-1][startPt+1]))
                         lastEle = len(removeMe)
                         if removeMe[lastEle-1]==self.trackEnergy[i-1][startPt]:
-                                #self.shiftup(j-1,startPt)
-                        #        print "_____handled#1"
-                                #self.matrix[i-1][startPt]=-1
                                 self.shiftLeft(i-1,startPt)
                         elif removeMe[lastEle-1]==self.trackEnergy[i-1][startPt+1]:
                                 self.shiftLeft(i-1,startPt+1)
-                                #print "______handled#2"
                                 startPt = startPt+1
                     #now check bounds right
                     elif startPt+1 >= self.columns:
@@ -196,23 +166,12 @@ class seamCarve:
                         lastEle = len(removeMe)
                         if removeMe[lastEle-1] == self.trackEnergy[i-1][startPt-1]:
                             self.shiftLeft(i-1,startPt-1)
-                        #    print "________handled#1"
                             startPt = startPt-1
                         else:
                             removeMe[lastEle-1]==self.trackEnergy[i-1][startPt]
-                        #    print "__________handled#2"
-                    #        print self.matrix
                             self.shiftLeft(i-1,startPt)
                 finally:
                     i-=1
-            #        print "cleaned^^"
-        #for i in self.matrix:
-        #    print i
-    #    for i in self.trackEnergy:
-    #        print i
-
-
-
 
     def carveHorizontalyl(self):
         y = self.rows
@@ -242,7 +201,6 @@ class seamCarve:
         self.shiftup(j,startPt)
         while j > 0:
             if startPt+1 == self.rows:
-            #    print "out of bounds Right: coords: {},{}".format(startPt,j)
                 removeMe.append(
                     min( self.trackEnergy[startPt-1][j-1],\
                     self.trackEnergy[startPt][j-1]  )
@@ -253,7 +211,6 @@ class seamCarve:
                 elif removeMe[lastEle-1]==self.trackEnergy[startPt][j-1]:
                     self.shiftup(j-1,startPt)
             elif startPt-1 < 0:
-                #    print "out of bounds Left: coords: {},{}".format(startPt,j)
                     removeMe.append(
                         min( self.trackEnergy[startPt][j-1]  ,self.trackEnergy[startPt+1][j-1])
                         )
@@ -263,7 +220,6 @@ class seamCarve:
                     elif removeMe[lastEle-1]==self.trackEnergy[startPt+1][j-1]:
                         self.shiftup(j-1,startPt+1)
             else:
-            #    print "current figuring out: {},{}".format(startPt,j)
                 removeMe.append(
                     min( self.trackEnergy[startPt-1][j-1],\
                     self.trackEnergy[startPt][j-1]  ,self.trackEnergy[startPt+1][j-1])
@@ -276,37 +232,11 @@ class seamCarve:
                 elif removeMe[lastEle-1]==self.trackEnergy[startPt+1][j-1]:
                     self.shiftup(j-1,startPt+1)
             j-=1
-    #    print "___________"
-    #    for i in self.matrix:
-        #    print i
-
 
     def shiftup(self,col,row):
-    #    print "being deleted: {},{}".format(row,col)
         for i in range(row+1,self.rows):
             self.matrix[i-1][col] = self.matrix[i][col]
         del self.matrix[self.rows-1][col]
-    #    print "deleted"
 
     def shiftLeft(self,col,row):
-    #    print "being deleted: {},{}".format(col,row)
         del self.matrix[col][row]
-            #set stuff on right equal
-            #go left to right
-            #col is where you start
-            #for j in range(col,self.columns):
-            #    if j == self.columns:
-            #        break
-            #    print self.matrix[row][j],self.matrix[row][j+1]
-            #    self.matrix[row][j]=self.matrix[row][j+1]
-
-
-
-
-    def newImage(self,firstfour,filename):
-        #new matrix = first + self.matrix
-        #create new file concatending _processed.pgm at the end
-        pass
-
-    #Note:: Process vertical seams first
-    #Note:: check edge cases
